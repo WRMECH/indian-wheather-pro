@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>India Weather - Advanced 3D Weather Experience</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Three.js from reliable CDN -->
+    <script src="https://unpkg.com/three@0.158.0/build/three.min.js"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">🌤️ India Weather 3D Pro</h1>
+            <p class="tagline">Advanced 3D weather visualization across India</p>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="search-section">
+                <div class="search-container">
+                    <input type="text" id="citySearch" placeholder="Search any city in India..." class="search-input">
+                    <button id="voiceBtn" class="voice-btn" title="Voice Search">🎤</button>
+                    <button id="searchBtn" class="search-btn">Search</button>
+                </div>
+                <div class="animation-controls">
+                    <button id="toggleAnimation" class="control-btn active">⏸️ Pause Animation</button>
+                    <button id="changeView" class="control-btn">🔄 Change View</button>
+                    <button id="resetView" class="control-btn">🏠 Reset View</button>
+                </div>
+                <div class="voice-status" id="voiceStatus" style="display: none;">
+                    <div class="voice-indicator">
+                        <div class="voice-wave"></div>
+                        <div class="voice-wave"></div>
+                        <div class="voice-wave"></div>
+                    </div>
+                    <p id="voiceStatusText">Listening...</p>
+                </div>
+            </div>
+
+            <div class="stats-section">
+                <div class="stat-card">
+                    <span class="stat-number" id="totalCities">0</span>
+                    <span class="stat-label">Cities Covered</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="totalStates">28</span>
+                    <span class="stat-label">States & UTs</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="lastUpdated">Live</span>
+                    <span class="stat-label">Data Status</span>
+                </div>
+            </div>
+
+            <div class="featured-cities">
+                <h2>Weather Across India</h2>
+                <div class="cities-grid" id="citiesGrid">
+                    <!-- Cities will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="weather-details" id="weatherDetails" style="display: none;">
+                <div class="weather-card detailed">
+                    <button class="close-btn" id="closeBtn">&times;</button>
+                    
+                    <!-- Advanced 3D Weather Container -->
+                    <div class="weather-3d-container" id="weather3DContainer">
+                        <canvas id="weather3DCanvas"></canvas>
+                        <div class="weather-overlay">
+                            <div class="weather-info-panel">
+                                <div class="weather-type-indicator" id="weatherTypeIndicator">🌤️ Loading...</div>
+                                <div class="weather-intensity" id="weatherIntensity">Intensity: Normal</div>
+                                <div class="weather-time" id="weatherTime">Day</div>
+                            </div>
+                            <div class="animation-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Particles:</span>
+                                    <span class="stat-value" id="particleCount">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">FPS:</span>
+                                    <span class="stat-value" id="fpsCounter">60</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="weather-header">
+                        <h3 id="detailCityName"></h3>
+                        <p id="detailDateTime"></p>
+                        <p id="detailLocation"></p>
+                    </div>
+                    <div class="weather-main">
+                        <div class="temperature">
+                            <span id="detailTemp"></span>
+                            <span class="unit">°C</span>
+                        </div>
+                        <div class="weather-icon">
+                            <img id="detailIcon" src="/placeholder.svg" alt="Weather icon">
+                        </div>
+                        <p id="detailDescription"></p>
+                    </div>
+                    <div class="weather-stats">
+                        <div class="stat">
+                            <span class="label">Feels like</span>
+                            <span id="detailFeelsLike"></span>
+                        </div>
+                        <div class="stat">
+                            <span class="label">Humidity</span>
+                            <span id="detailHumidity"></span>
+                        </div>
+                        <div class="stat">
+                            <span class="label">Wind Speed</span>
+                            <span id="detailWindSpeed"></span>
+                        </div>
+                        <div class="stat">
+                            <span class="label">Pressure</span>
+                            <span id="detailPressure"></span>
+                        </div>
+                        <div class="stat">
+                            <span class="label">Visibility</span>
+                            <span id="detailVisibility"></span>
+                        </div>
+                        <div class="stat">
+                            <span class="label">UV Index</span>
+                            <span id="detailUvIndex"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 India Weather 3D Pro. Advanced 3D weather visualization powered by Three.js</p>
+        </div>
+    </footer>
+
+    <div class="loading" id="loading">
+        <div class="spinner-3d">
+            <div class="cube">
+                <div class="face front">🌤️</div>
+                <div class="face back">🌧️</div>
+                <div class="face right">☀️</div>
+                <div class="face left">❄️</div>
+                <div class="face top">⛈️</div>
+                <div class="face bottom">🌫️</div>
+            </div>
+        </div>
+        <p>Loading advanced 3D weather data...</p>
+    </div>
+
+    <script src="advanced-weather-3d.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

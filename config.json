@@ -1,0 +1,19 @@
+{
+  "api": {
+    "provider": "OpenWeatherMap",
+    "base_url": "https://api.openweathermap.org/data/2.5/weather",
+    "documentation": "https://openweathermap.org/api"
+  },
+  "cities": {
+    "total": 20,
+    "country": "India",
+    "update_interval": "10 minutes"
+  },
+  "features": [
+    "Real-time weather data",
+    "Search functionality",
+    "Responsive design",
+    "Detailed weather information",
+    "Major Indian cities coverage"
+  ]
+}

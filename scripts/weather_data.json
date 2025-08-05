@@ -1,0 +1,362 @@
+[
+  {
+    "city": "Mumbai",
+    "country": "IN",
+    "temperature": 28,
+    "feels_like": 31,
+    "humidity": 76,
+    "pressure": 1008,
+    "description": "Scattered Clouds",
+    "icon": "03n",
+    "wind_speed": 3.19,
+    "wind_direction": 256,
+    "visibility": 10.0,
+    "coordinates": {
+      "lat": 19.076,
+      "lon": 72.8777
+    },
+    "timestamp": "2025-08-05 21:08:03"
+  },
+  {
+    "city": "Delhi",
+    "country": "IN",
+    "temperature": 26,
+    "feels_like": 27,
+    "humidity": 77,
+    "pressure": 1004,
+    "description": "Overcast Clouds",
+    "icon": "04n",
+    "wind_speed": 4.83,
+    "wind_direction": 120,
+    "visibility": 10.0,
+    "coordinates": {
+      "lat": 28.7041,
+      "lon": 77.1025
+    },
+    "timestamp": "2025-08-05 21:08:03"
+  },
+  {
+    "city": "Bangalore",
+    "country": "IN",
+    "temperature": 23,
+    "feels_like": 24,
+    "humidity": 76,
+    "pressure": 1010,
+    "description": "Overcast Clouds",
+    "icon": "04n",
+    "wind_speed": 2.15,
+    "wind_direction": 143,
+    "visibility": 10.0,
+    "coordinates": {
+      "lat": 12.9716,
+      "lon": 77.5946
+    },
+    "timestamp": "2025-08-05 21:08:04"
+  },
+  {
+    "city": "Hyderabad",
+    "country": "IN",
+    "temperature": 24,
+    "feels_like": 25,
+    "humidity": 74,
+    "pressure": 1008,
+    "description": "Broken Clouds",
+    "icon": "04n",
+    "wind_speed": 1.12,
+    "wind_direction": 86,
+    "visibility": 10.0,
+    "coordinates": {
+      "lat": 17.385,
+      "lon": 78.4867
+    },
+    "timestamp": "2025-08-05 21:08:04"
+  },
+  {
+    "city": "Chennai",
+    "country": "IN",
+    "temperature": 29,
+    "feels_like": 35,
+    "humidity": 82,
+    "pressure": 1007,
+    "description": "Scattered Clouds",
+    "icon": "03n",
+    "wind_speed": 4.42,
+    "wind_direction": 158,
+    "visibility": 10.0,
+    "coordinates": {
+      "lat": 13.0827,
+      "lon": 80.2707
+    },
+    "timestamp": "2025-08-05 21:08:04"
+  },
+  {
+    "city": "Kolkata",
+    "country": "IN",
+    "temperature": 29,
+    "feels_like": 35,
+    "humidity": 80,
+    "pressure": 1006,
+    "description": "Overcast Clouds",
+    "icon": "04n",
+    "wind_speed": 3.74,
+    "wind_direction": 187,
+    "visibility": 10.0,
+    "coordinates": {
+      "lat": 22.5726,
+      "lon": 88.3639
+    },
+    "timestamp": "2025-08-05 21:08:04"
+  },
+  {
+    "city": "Pune",
+    "country": "IN",
+    "temperature": 25,
+    "feels_like": 26,
+    "humidity": 83,
+    "pressure": 1009,
+    "description": "Scattered Clouds",
+    "icon": "03n",
+    "wind_speed": 3.35,
+    "wind_direction": 262,
+    "visibility": 10.0,
+    "coordinates": {
+      "lat": 18.5204,
+      "lon": 73.8567
+    },
+    "timestamp": "2025-08-05 21:08:05"
+  },
+  {
+    "city": "Ahmedabad",
+    "country": "IN",
+    "temperature": 29,
+    "feels_like": 32,
+    "humidity": 68,
+    "pressure": 1006,
+    "description": "Broken Clouds",
+    "icon": "04n",
+    "wind_speed": 4.7,
+    "wind_direction": 189,
+    "visibility": 10.0,
+    "coordinates": {
+      "lat": 23.0225,
+      "lon": 72.5714
+    },
+    "timestamp": "2025-08-05 21:08:05"
+  },
+  {
+    "city": "Jaipur",
+    "country": "IN",
+    "temperature": 28,
+    "feels_like": 31,
+    "humidity": 64,
+    "pressure": 1005,
+    "description": "Overcast Clouds",
+    "icon": "04n",
+    "wind_speed": 3.86,
+    "wind_direction": 247,
+    "visibility": 10.0,
+    "coordinates": {
+      "lat": 26.9123,
+      "lon": 75.7876
+    },
+    "timestamp": "2025-08-05 21:08:05"
+  },
+  {
+    "city": "Surat",
+    "country": "IN",
+    "temperature": 27,
+    "feels_like": 31,
+    "humidity": 80,
+    "pressure": 1007,
+    "description": "Few Clouds",
+    "icon": "02n",
+    "wind_speed": 5.05,
+    "wind_direction": 211,
+    "visibility": 10.0,
+    "coordinates": {
+      "lat": 21.1702,
+      "lon": 72.8311
+    },
+    "timestamp": "2025-08-05 21:08:06"
+  },
+  {
+    "city": "Lucknow",
+    "country": "IN",
+    "temperature": 27,
+    "feels_like": 30,
+    "humidity": 92,
+    "pressure": 1006,
+    "description": "Overcast Clouds",
+    "icon": "04n",
+    "wind_speed": 1.98,
+    "wind_direction": 353,
+    "visibility": 10.0,
+    "coordinates": {
+      "lat": 26.8467,
+      "lon": 80.9462
+    },
+    "timestamp": "2025-08-05 21:08:06"
+  },
+  {
+    "city": "Kanpur",
+    "country": "IN",
+    "temperature": 26,
+    "feels_like": 26,
+    "humidity": 90,
+    "pressure": 1006,
+    "description": "Broken Clouds",
+    "icon": "04n",
+    "wind_speed": 2.2,
+    "wind_direction": 47,
+    "visibility": 10.0,
+    "coordinates": {
+      "lat": 26.4499,
+      "lon": 80.3319
+    },
+    "timestamp": "2025-08-05 21:08:06"
+  },
+  {
+    "city": "Nagpur",
+    "country": "IN",
+    "temperature": 29,
+    "feels_like": 32,
+    "humidity": 67,
+    "pressure": 1007,
+    "description": "Overcast Clouds",
+    "icon": "04n",
+    "wind_speed": 1.84,
+    "wind_direction": 321,
+    "visibility": 10.0,
+    "coordinates": {
+      "lat": 21.1458,
+      "lon": 79.0882
+    },
+    "timestamp": "2025-08-05 21:08:06"
+  },
+  {
+    "city": "Indore",
+    "country": "IN",
+    "temperature": 24,
+    "feels_like": 25,
+    "humidity": 83,
+    "pressure": 1009,
+    "description": "Few Clouds",
+    "icon": "02n",
+    "wind_speed": 2.48,
+    "wind_direction": 293,
+    "visibility": 10.0,
+    "coordinates": {
+      "lat": 22.7196,
+      "lon": 75.8577
+    },
+    "timestamp": "2025-08-05 21:08:07"
+  },
+  {
+    "city": "Bhopal",
+    "country": "IN",
+    "temperature": 25,
+    "feels_like": 26,
+    "humidity": 78,
+    "pressure": 1008,
+    "description": "Few Clouds",
+    "icon": "02n",
+    "wind_speed": 2.94,
+    "wind_direction": 269,
+    "visibility": 10.0,
+    "coordinates": {
+      "lat": 23.2599,
+      "lon": 77.4126
+    },
+    "timestamp": "2025-08-05 21:08:07"
+  },
+  {
+    "city": "Visakhapatnam",
+    "country": "IN",
+    "temperature": 29,
+    "feels_like": 35,
+    "humidity": 81,
+    "pressure": 1007,
+    "description": "Broken Clouds",
+    "icon": "04n",
+    "wind_speed": 2.85,
+    "wind_direction": 201,
+    "visibility": 10.0,
+    "coordinates": {
+      "lat": 17.6868,
+      "lon": 83.2185
+    },
+    "timestamp": "2025-08-05 21:08:07"
+  },
+  {
+    "city": "Patna",
+    "country": "IN",
+    "temperature": 29,
+    "feels_like": 32,
+    "humidity": 70,
+    "pressure": 1005,
+    "description": "Scattered Clouds",
+    "icon": "03n",
+    "wind_speed": 2.15,
+    "wind_direction": 344,
+    "visibility": 10.0,
+    "coordinates": {
+      "lat": 25.5941,
+      "lon": 85.1376
+    },
+    "timestamp": "2025-08-05 21:08:07"
+  },
+  {
+    "city": "Vadodara",
+    "country": "IN",
+    "temperature": 28,
+    "feels_like": 31,
+    "humidity": 67,
+    "pressure": 1007,
+    "description": "Scattered Clouds",
+    "icon": "03n",
+    "wind_speed": 5.53,
+    "wind_direction": 201,
+    "visibility": 10.0,
+    "coordinates": {
+      "lat": 22.3072,
+      "lon": 73.1812
+    },
+    "timestamp": "2025-08-05 21:08:08"
+  },
+  {
+    "city": "Ghaziabad",
+    "country": "IN",
+    "temperature": 26,
+    "feels_like": 26,
+    "humidity": 86,
+    "pressure": 1005,
+    "description": "Overcast Clouds",
+    "icon": "04n",
+    "wind_speed": 3.56,
+    "wind_direction": 119,
+    "visibility": 10.0,
+    "coordinates": {
+      "lat": 28.6692,
+      "lon": 77.4538
+    },
+    "timestamp": "2025-08-05 21:08:08"
+  },
+  {
+    "city": "Ludhiana",
+    "country": "IN",
+    "temperature": 25,
+    "feels_like": 26,
+    "humidity": 95,
+    "pressure": 1003,
+    "description": "Scattered Clouds",
+    "icon": "03n",
+    "wind_speed": 4.13,
+    "wind_direction": 120,
+    "visibility": 10.0,
+    "coordinates": {
+      "lat": 30.901,
+      "lon": 75.8573
+    },
+    "timestamp": "2025-08-05 21:08:08"
+  }
+]
