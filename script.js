@@ -1,8 +1,9 @@
 // Enhanced Weather App with Advanced 3D Animations
 const API_KEY = "79e671270479fb520a536b11ae5416f0" // Replace with your actual API key
 const BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
+// const ONECALL_URL = "https://api.openweathermap.org/data/3.0/onecall" // For more detailed data (requires different API call)
 
-// Indian cities data
+// Indian cities data with Dehradun added
 const indianCities = [
   { name: "Mumbai", state: "Maharashtra", lat: 19.076, lon: 72.8777 },
   { name: "Delhi", state: "Delhi", lat: 28.7041, lon: 77.1025 },
@@ -24,6 +25,7 @@ const indianCities = [
   { name: "Vadodara", state: "Gujarat", lat: 22.3072, lon: 73.1812 },
   { name: "Ghaziabad", state: "Uttar Pradesh", lat: 28.6692, lon: 77.4538 },
   { name: "Ludhiana", state: "Punjab", lat: 30.901, lon: 75.8573 },
+  { name: "Dehradun", state: "Uttarakhand", lat: 30.3165, lon: 78.0322 }, // Added Dehradun
 ]
 
 // Declare THREE variable
@@ -239,7 +241,6 @@ class EnhancedWeatherApp {
   stopVoiceSearch() {
     if (this.recognition && this.isListening) {
       this.recognition.stop()
-      console.log("Voice recognition stopped")
     }
   }
 
@@ -411,6 +412,9 @@ class EnhancedWeatherApp {
       "ghazi abad": "Ghaziabad",
       ludhiana: "Ludhiana",
       "ludhi ana": "Ludhiana",
+      dehradun: "Dehradun", // Added Dehradun
+      "dehra dun": "Dehradun",
+      "deh ra dun": "Dehradun",
     }
 
     // Check for exact matches first
@@ -579,8 +583,12 @@ class EnhancedWeatherApp {
       }
 
       const data = await response.json()
+
+      // Enhanced weather condition detection and precipitation information
+      const enhancedData = this.enhanceWeatherData(data)
+
       return {
-        ...data,
+        ...enhancedData,
         customName: cityData?.name || data.name,
         state: cityData?.state || "",
       }
@@ -588,6 +596,104 @@ class EnhancedWeatherApp {
       console.error(`Error fetching weather for ${cityData?.name}:`, error)
       return null
     }
+  }
+
+  enhanceWeatherData(data) {
+    const weatherCode = data.weather[0].id
+    const description = data.weather[0].description.toLowerCase()
+    const humidity = data.main.humidity
+    const clouds = data.clouds.all
+
+    let enhancedCondition = data.weather[0].main
+    let displayPrecipitation = "N/A" // This will hold the string for display
+
+    // --- Prioritize actual precipitation data if available ---
+    if (data.rain && (data.rain["1h"] > 0 || data.rain["3h"] > 0)) {
+      const rainAmount = data.rain["1h"] || (data.rain["3h"] / 3).toFixed(1)
+      displayPrecipitation = `Rain: ${rainAmount} mm/hr`
+      enhancedCondition = "Rain"
+    } else if (data.snow && (data.snow["1h"] > 0 || data.snow["3h"] > 0)) {
+      const snowAmount = data.snow["1h"] || (data.snow["3h"] / 3).toFixed(1)
+      displayPrecipitation = `Snow: ${snowAmount} mm/hr`
+      enhancedCondition = "Snow"
+    } else {
+      // --- If no direct precipitation, determine condition from description and calculate probability ---
+      if (description.includes("rain") || description.includes("drizzle")) {
+        enhancedCondition = description.includes("drizzle") ? "Drizzle" : "Rain"
+        displayPrecipitation = `Rain Probability: ${this.estimateRainProbability(weatherCode, humidity, clouds)}%`
+      } else if (description.includes("snow")) {
+        enhancedCondition = "Snow"
+        displayPrecipitation = `Snow Probability: ${this.estimateRainProbability(weatherCode, humidity, clouds)}%` // Re-using rain probability for snow
+      } else {
+        // Fallback to general weather codes and calculate probability
+        if (weatherCode >= 200 && weatherCode < 300) {
+          enhancedCondition = "Thunderstorm"
+        } else if (weatherCode >= 700 && weatherCode < 800) {
+          enhancedCondition = "Mist"
+        } else if (weatherCode === 800) {
+          enhancedCondition = "Clear"
+        } else if (weatherCode > 800) {
+          enhancedCondition = "Clouds"
+        }
+        displayPrecipitation = `Rain Probability: ${this.estimateRainProbability(weatherCode, humidity, clouds)}%`
+      }
+    }
+
+    return {
+      ...data,
+      weather: [
+        {
+          ...data.weather[0],
+          main: enhancedCondition,
+        },
+      ],
+      displayPrecipitation: displayPrecipitation, // Use the new field for display
+      enhanced: true,
+    }
+  }
+
+  /**
+   * Estimates rain probability based on weather conditions, humidity, and cloudiness.
+   * Note: This is an estimation as OpenWeatherMap's current weather API (2.5) does not provide direct PoP.
+   * For precise PoP, the One Call API (3.0) or forecast APIs would be needed.
+   */
+  estimateRainProbability(weatherCode, humidity, clouds) {
+    let probability = 0
+
+    // 1. Weather condition codes as base
+    if (weatherCode >= 200 && weatherCode < 300) {
+      // Thunderstorm
+      probability = 80 + (weatherCode - 200) / 10 // 80-89%
+    } else if (weatherCode >= 300 && weatherCode < 400) {
+      // Drizzle
+      probability = 60 + (weatherCode - 300) / 10 // 60-69%
+    } else if (weatherCode >= 500 && weatherCode < 600) {
+      // Rain
+      probability = 70 + (weatherCode - 500) / 10 // 70-79%
+    } else if (weatherCode >= 600 && weatherCode < 700) {
+      // Snow
+      probability = 65 + (weatherCode - 600) / 10 // 65-74%
+    } else if (weatherCode >= 700 && weatherCode < 800) {
+      // Atmosphere (Mist, Smoke, Haze, Fog, Sand, Dust, Ash, Squall, Tornado)
+      // Probability depends heavily on humidity and clouds here
+      probability = 20 + (humidity / 100) * 30 + (clouds / 100) * 20 // 20-70%
+    } else if (weatherCode === 800) {
+      // Clear sky
+      probability = 0 + (humidity / 100) * 5 // 0-5%
+    } else if (weatherCode > 800) {
+      // Clouds
+      probability = (clouds / 100) * 50 + (humidity / 100) * 20 // 0-70%
+    }
+
+    // 2. Adjust based on humidity and cloud cover
+    probability += (humidity / 100) * 15 // Up to +15% for humidity
+    probability += (clouds / 100) * 10 // Up to +10% for clouds
+
+    // Ensure probability is within 0-100 range
+    probability = Math.max(0, Math.min(100, probability))
+
+    // Round to nearest integer
+    return Math.round(probability)
   }
 
   renderCities(weatherData) {
@@ -611,6 +717,12 @@ class EnhancedWeatherApp {
 
     const iconUrl = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
 
+    // Use displayPrecipitation for the card
+    const precipitationHtml =
+      data.displayPrecipitation && data.displayPrecipitation !== "N/A"
+        ? `<div class="precipitation-info">💧 ${data.displayPrecipitation}</div>`
+        : ""
+
     card.innerHTML = `
       <h3 class="city-name">${data.customName || data.name}</h3>
       <p class="city-state">${data.state}</p>
@@ -621,6 +733,7 @@ class EnhancedWeatherApp {
         </div>
       </div>
       <p class="description">${data.weather[0].description}</p>
+      ${precipitationHtml}
       <div class="weather-stats">
         <div class="stat">
           <span class="label">Feels like</span>
@@ -651,7 +764,8 @@ class EnhancedWeatherApp {
       }
 
       const data = await response.json()
-      this.showWeatherDetails(data)
+      const enhancedData = this.enhanceWeatherData(data)
+      this.showWeatherDetails(enhancedData)
     } catch (error) {
       console.error("Error searching city:", error)
       this.showError("City not found. Please try another city name.")
@@ -682,7 +796,7 @@ class EnhancedWeatherApp {
       detailWindSpeed: `${data.wind.speed} m/s`,
       detailPressure: `${data.main.pressure} hPa`,
       detailVisibility: `${(data.visibility / 1000).toFixed(1)} km`,
-      detailUvIndex: "N/A",
+      detailUvIndex: data.displayPrecipitation || "N/A", // Use the new field for display
     }
 
     Object.keys(elements).forEach((id) => {
@@ -692,13 +806,19 @@ class EnhancedWeatherApp {
       }
     })
 
+    // Update the UV Index label to show Precipitation
+    const uvLabel = document.querySelector("#detailUvIndex").previousElementSibling
+    if (uvLabel) {
+      uvLabel.textContent = "Precipitation" // General label for both mm/hr and probability
+    }
+
     // Set weather icon
     const iconElement = document.getElementById("detailIcon")
     if (iconElement) {
       iconElement.src = iconUrl
     }
 
-    // Initialize advanced 3D weather animation
+    // Initialize advanced 3D weather animation with enhanced condition
     this.initAdvanced3DWeather(data)
 
     this.weatherDetails.style.display = "flex"

@@ -67,7 +67,7 @@ class AdvancedWeather3D {
       console.log("Advanced 3D Weather scene initialized successfully")
 
       // Start with a default sunny effect to test
-      this.createAdvancedSunnyEffect()
+      this.updateWeather("clear") // Initialize with a default weather state
 
       this.animate()
       this.setupControls()
@@ -86,7 +86,7 @@ class AdvancedWeather3D {
     this.sunLight.position.set(10, 10, 5)
     this.scene.add(this.sunLight)
 
-    // Point lights for atmosphere
+    // Point lights for atmosphere (can be adjusted based on weather)
     this.atmosphereLight = new window.THREE.PointLight(0x87ceeb, 0.5, 50)
     this.atmosphereLight.position.set(0, 5, 0)
     this.scene.add(this.atmosphereLight)
@@ -198,7 +198,6 @@ class AdvancedWeather3D {
   createAdvancedRainEffect() {
     this.clearParticles()
     this.weatherType = "rain"
-    this.renderer.setClearColor(0x2c3e50, 1)
 
     // Create rain drops
     const rainGeometry = new window.THREE.BufferGeometry()
@@ -233,7 +232,6 @@ class AdvancedWeather3D {
   createAdvancedSnowEffect() {
     this.clearParticles()
     this.weatherType = "snow"
-    this.renderer.setClearColor(0xf0f8ff, 1)
 
     const snowGeometry = new window.THREE.BufferGeometry()
     const snowCount = 400
@@ -266,7 +264,6 @@ class AdvancedWeather3D {
   createAdvancedSunnyEffect() {
     this.clearParticles()
     this.weatherType = "sunny"
-    this.renderer.setClearColor(0x87ceeb, 1)
 
     // Create animated sun
     const sunGeometry = new window.THREE.SphereGeometry(1.2, 32, 32)
@@ -305,6 +302,7 @@ class AdvancedWeather3D {
     this.clearParticles()
     this.weatherType = "cloudy"
     this.renderer.setClearColor(0x87ceeb, 1)
+    this.scene.fog = new window.THREE.Fog(0x87ceeb, 15, 60) // Add fog for cloudy
 
     this.createClouds(0xb0c4de, 6)
     this.createFloatingParticles(0xb0c4de, 200, 0.03)
@@ -316,9 +314,10 @@ class AdvancedWeather3D {
     this.clearParticles()
     this.weatherType = "thunderstorm"
     this.renderer.setClearColor(0x1a1a1a, 1)
+    this.scene.fog = new window.THREE.Fog(0x1a1a1a, 5, 40) // Add dense fog for thunderstorm
 
     // Heavy rain
-    this.createAdvancedRainEffect()
+    this.createAdvancedRainEffect() // This will also set fog
 
     // Lightning effect
     const lightningGeometry = new window.THREE.PlaneGeometry(0.3, 8)
@@ -340,6 +339,7 @@ class AdvancedWeather3D {
     this.clearParticles()
     this.weatherType = "mist"
     this.renderer.setClearColor(0xd3d3d3, 1)
+    this.scene.fog = new window.THREE.Fog(0xd3d3d3, 5, 30) // Add dense fog for mist
 
     const mistGeometry = new window.THREE.BufferGeometry()
     const mistCount = 300
@@ -369,21 +369,43 @@ class AdvancedWeather3D {
   }
 
   createClouds(color = 0xffffff, count = 3) {
+    // Clear existing clouds if any
+    this.particles = this.particles.filter((p) => p.type !== "cloud")
+
     for (let i = 0; i < count; i++) {
-      const cloudGeometry = new window.THREE.SphereGeometry(1.5, 16, 16)
-      const cloudMaterial = new window.THREE.MeshLambertMaterial({
-        color: color,
-        transparent: true,
-        opacity: 0.8,
-      })
-      const cloud = new window.THREE.Mesh(cloudGeometry, cloudMaterial)
-      cloud.position.set((Math.random() - 0.5) * 12, Math.random() * 3 + 2, (Math.random() - 0.5) * 12)
-      cloud.scale.set(1 + Math.random() * 0.5, 0.6 + Math.random() * 0.4, 1 + Math.random() * 0.5)
-      this.scene.add(cloud)
+      const cloudGroup = new window.THREE.Group()
+      const numSubSpheres = Math.floor(Math.random() * 5) + 3 // 3 to 7 sub-spheres per cloud
+
+      for (let j = 0; j < numSubSpheres; j++) {
+        const subSphereRadius = 0.8 + Math.random() * 0.7 // Vary size
+        const cloudGeometry = new window.THREE.SphereGeometry(subSphereRadius, 16, 16)
+        const cloudMaterial = new window.THREE.MeshLambertMaterial({
+          color: color,
+          transparent: true,
+          opacity: 0.7 + Math.random() * 0.2, // Vary opacity
+        })
+        const subCloud = new window.THREE.Mesh(cloudGeometry, cloudMaterial)
+
+        // Position sub-spheres relative to the group center
+        subCloud.position.set((Math.random() - 0.5) * 2, (Math.random() - 0.5) * 1, (Math.random() - 0.5) * 2)
+        cloudGroup.add(subCloud)
+      }
+
+      // Scale the entire cloud group
+      const scaleFactor = 1.5 + Math.random() * 1.0
+      cloudGroup.scale.set(scaleFactor, scaleFactor * (0.5 + Math.random() * 0.5), scaleFactor)
+
+      // Position the entire cloud group in the scene
+      cloudGroup.position.set(
+        (Math.random() - 0.5) * 15, // Wider spread
+        Math.random() * 4 + 3, // Higher up
+        (Math.random() - 0.5) * 15,
+      )
+      this.scene.add(cloudGroup)
       this.particles.push({
-        mesh: cloud,
+        mesh: cloudGroup,
         type: "cloud",
-        driftSpeed: 0.01 + Math.random() * 0.02,
+        driftSpeed: 0.005 + Math.random() * 0.01, // Slower, more subtle drift
       })
     }
   }
@@ -486,7 +508,14 @@ class AdvancedWeather3D {
     this.particles.forEach((particle) => {
       this.scene.remove(particle.mesh)
       if (particle.mesh.geometry) particle.mesh.geometry.dispose()
-      if (particle.mesh.material) particle.mesh.material.dispose()
+      if (particle.mesh.material) {
+        // Dispose of materials if they are not shared
+        if (Array.isArray(particle.mesh.material)) {
+          particle.mesh.material.forEach((m) => m.dispose())
+        } else {
+          particle.mesh.material.dispose()
+        }
+      }
     })
     this.particles = []
   }
@@ -608,6 +637,9 @@ class AdvancedWeather3D {
     this.clearParticles()
     if (this.renderer) {
       this.renderer.dispose()
+    }
+    if (this.scene) {
+      this.scene.fog = null // Remove fog when destroying scene
     }
   }
 }
